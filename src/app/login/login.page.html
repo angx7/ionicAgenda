@@ -1,0 +1,36 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <h1>Iniciar Sesión</h1>
+    <form (ngSubmit)="access(loginForm)" #loginForm="ngForm">
+      <ion-item>
+        <ion-input
+          type="email"
+          fill="solid"
+          label="Correo"
+          labelPlacement="floating"
+          helperText="Enter a valid email"
+          errorText="Invalid email"
+          [(ngModel)]="correo"
+          name="correo"
+          required
+          pattern="^[^@]+@[^@]+\.[a-zA-Z]{2,}$"
+          #correoInput="ngModel"
+        ></ion-input>
+      </ion-item>
+      <ion-button type="submit" expand="block" [disabled]="" color="success"
+        ><ion-icon name="checkmark-circle-outline"></ion-icon
+      ></ion-button>
+      <ion-text color="success">
+        <sub>
+          <a (click)="navigateToRegister()">Crear Cuenta</a>
+        </sub>
+      </ion-text>
+    </form>
+  </div>
+</ion-content>

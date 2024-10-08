@@ -1,0 +1,152 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Crear cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <form (ngSubmit)="addUser(taskForm)" #taskForm="ngForm">
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input
+          type="text"
+          name="nombre"
+          [(ngModel)]="nombre"
+          errorText="Campo requerido"
+          required
+          #nombreInput="ngModel"
+          pattern="[a-zA-Z]+"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          type="email"
+          fill="solid"
+          label="Correo"
+          labelPlacement="floating"
+          helperText="Enter a valid email"
+          errorText="Invalid email"
+          [(ngModel)]="correo"
+          name="correo"
+          required
+          pattern="^[^@]+@[^@]+\.[a-zA-Z]{2,}$"
+          #correoInput="ngModel"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">País</ion-label>
+        <ion-input
+          type="text"
+          name="pais"
+          [(ngModel)]="pais"
+          errorText="Campo requerido"
+          required
+          #paisInput="ngModel"
+          pattern="[a-zA-Z]+"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Estado</ion-label>
+        <ion-input
+          type="text"
+          name="estado"
+          [(ngModel)]="estado"
+          errorText="Campo requerido"
+          required
+          #estadoInput="ngModel"
+          pattern="[a-zA-Z]+"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Dirección</ion-label>
+        <ion-input
+          type="text"
+          name="direccion"
+          [(ngModel)]="direccion"
+          errorText="Campo requerido"
+          required
+          #direccionInput="ngModel"
+          pattern="[a-zA-Z]+"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Teléfono</ion-label>
+        <ion-input
+          type="number"
+          name="telefono"
+          [(ngModel)]="telefono"
+          errorText="Campo invalido"
+          required
+          #telefonoInput="ngModel"
+          max="9999999999"
+        ></ion-input>
+      </ion-item>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Género</ion-label>
+          <ion-select
+            label-placement="stacked"
+            label=""
+            placeholder=""
+            [(ngModel)]="genero"
+            name="genero"
+            required
+            #generoInput="ngModel"
+          >
+            <ion-select-option value="masculino">Masculino</ion-select-option>
+            <ion-select-option value="femenino">Femenino</ion-select-option>
+            <ion-select-option value="otro"
+              >Prefiero no decirlo</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <ion-item>
+        <ion-label position="floating">Fecha de nacimiento</ion-label>
+        <ion-input
+          type="date"
+          name="fechaNacimiento"
+          [(ngModel)]="fechaNacimiento"
+          errorText="Campo requerido"
+          required
+          #fechaNacimientoInput="ngModel"
+        ></ion-input>
+      </ion-item>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Estado Cívil</ion-label>
+          <ion-select
+            label-placement="stacked"
+            label=""
+            placeholder=""
+            [(ngModel)]="estadoCivil"
+            name="estadoCivil"
+            required
+            #estadoCivilInput="ngModel"
+          >
+            <ion-select-option value="soltero">Soltero</ion-select-option>
+            <ion-select-option value="casado">Casado</ion-select-option>
+            <ion-select-option value="divorciado">Divorciado</ion-select-option>
+            <ion-select-option value="viudo">Viudo</ion-select-option>
+            <ion-select-option value="otro"
+              >Prefiero no decirlo</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-list>
+      <ion-button
+        class="create"
+        type="submit"
+        expand="block"
+        [disabled]="taskForm.invalid"
+        color="success"
+        ><ion-icon name="checkmark-circle-outline"></ion-icon
+      ></ion-button>
+    </form>
+  </div>
+</ion-content>
