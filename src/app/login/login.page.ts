@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { Task } from '../interfaces/Task.interface';
+import { User } from '../interfaces/User.interface';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +25,8 @@ export class LoginPage {
       (user: { correo: string }) => user.correo === this.correo
     );
     if (user) {
+      const userTasks = this.getUserTasks(this.correo);
+      console.log('Tareas del usuario:', userTasks);
       this.router.navigate(['/home']);
     } else {
       const alert = await this.alertController.create({
@@ -41,5 +45,11 @@ export class LoginPage {
 
   navigateToRegister() {
     this.router.navigate(['/register-page']);
+  }
+
+  getUserTasks(email: string): Task[] {
+    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u) => u.correo === email);
+    return user ? user.tasks : [];
   }
 }

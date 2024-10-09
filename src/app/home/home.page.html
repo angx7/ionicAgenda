@@ -1,1 +1,28 @@
-<h1>Página principal</h1>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="logOut()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Recordatorios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="user">
+    <ion-list-header>
+      <ion-label>Tareas de {{ user.nombre }}</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let task of user.tasks">
+      <ion-label>{{ task.description }}</ion-label>
+      <ion-checkbox slot="start" [checked]="task.completed"></ion-checkbox>
+      <ion-button color="danger" (click)="openModal()"
+        ><ion-icon name="close-circle-outline"></ion-icon
+      ></ion-button>
+      <ion-button color="danger"
+        ><ion-icon name="close-circle-outline"></ion-icon
+      ></ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

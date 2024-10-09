@@ -23,8 +23,12 @@
           #correoInput="ngModel"
         ></ion-input>
       </ion-item>
-      <ion-button type="submit" expand="block" [disabled]="" color="success"
-        ><ion-icon name="checkmark-circle-outline"></ion-icon
+      <ion-button
+        type="submit"
+        expand="block"
+        [disabled]="!loginForm.form.valid"
+        color="success"
+        >Iniciar Sesión<ion-icon name="log-in-outline" slot="end"></ion-icon
       ></ion-button>
       <ion-text color="success">
         <sub>

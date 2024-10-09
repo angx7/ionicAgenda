@@ -1,3 +1,5 @@
+import { Task } from './Task.interface';
+
 export interface User {
   nombre: string;
   correo: string;
@@ -8,4 +10,5 @@ export interface User {
   genero: string;
   fechaNacimiento: Date;
   estadoCivil: string;
+  tasks: Task[];
 }

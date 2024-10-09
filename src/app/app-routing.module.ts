@@ -21,6 +21,10 @@ const routes: Routes = [
     path: 'register-page',
     loadChildren: () => import('./register-page/register-page.module').then( m => m.RegisterPagePageModule)
   },
+  {
+    path: 'task-detail-modal',
+    loadChildren: () => import('./task-detail-modal/task-detail-modal.module').then( m => m.TaskDetailModalPageModule)
+  },
 ];
 
 @NgModule({
