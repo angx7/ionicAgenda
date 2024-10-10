@@ -1,12 +1,35 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Modal Title</ion-title>
+    <ion-title>Detalles del hábito</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Close</ion-button>
+      <ion-button (click)="dismissModal()">Cerrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <p>Este es el contenido del modal</p>
+  <ion-list>
+    <ion-item>
+      <ion-label>Título</ion-label>
+      <ion-text>{{ task?.title}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Frecuencia</ion-label>
+      <ion-text>{{ task?.frequency}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Horario</ion-label>
+      <ion-text>{{ task?.time}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Estado</ion-label>
+      <ion-checkbox [checked]="task?.completed"></ion-checkbox>
+    </ion-item>
+
+    <!-- title: string;
+  frequency: string;
+  time: string;
+  // description: string;
+  completed: boolean; -->
+  </ion-list>
 </ion-content>

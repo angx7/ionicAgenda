@@ -47,7 +47,9 @@ export class RegisterPagePage {
 
   async addUser(_t8: NgForm) {
     const defaultTask: Task = {
-      description: 'HOLA',
+      title: 'Tarea 1',
+      frequency: 'Diario',
+      time: '12:00',
       completed: true,
     };
     const newUser: User = {

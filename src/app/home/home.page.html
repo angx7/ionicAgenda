@@ -15,10 +15,10 @@
       <ion-label>Tareas de {{ user.nombre }}</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let task of user.tasks">
-      <ion-label>{{ task.description }}</ion-label>
+      <ion-label>{{ task.title }}</ion-label>
       <ion-checkbox slot="start" [checked]="task.completed"></ion-checkbox>
-      <ion-button color="danger" (click)="openModal()"
-        ><ion-icon name="close-circle-outline"></ion-icon
+      <ion-button color="warning" (click)="openModal(task)"
+        ><ion-icon name="create-outline"></ion-icon
       ></ion-button>
       <ion-button color="danger"
         ><ion-icon name="close-circle-outline"></ion-icon

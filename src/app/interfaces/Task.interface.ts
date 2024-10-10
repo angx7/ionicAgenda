@@ -1,4 +1,7 @@
 export interface Task {
-  description: string;
+  title: string;
+  frequency: string;
+  time: string;
+  // description: string;
   completed: boolean;
 }

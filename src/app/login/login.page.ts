@@ -27,7 +27,9 @@ export class LoginPage {
     if (user) {
       const userTasks = this.getUserTasks(this.correo);
       console.log('Tareas del usuario:', userTasks);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/home'], { state: { user: user } });
+
+      // this.router.navigate(['/home']);
     } else {
       const alert = await this.alertController.create({
         header: 'Correo inválido',
