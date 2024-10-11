@@ -1,6 +1,10 @@
-#container {
-  text-align: center;
 
+.centrarContent{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  text-align: center;
   position: absolute;
   left: 0;
   right: 0;
@@ -8,20 +12,17 @@
   transform: translateY(-50%);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.btnAcces {
+  margin-bottom: 5px !important;
+  margin: 2rem;
+  width: 15rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.inputMail{
+  width: 21rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

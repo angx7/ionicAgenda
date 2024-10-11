@@ -48,10 +48,12 @@ export class RegisterPagePage {
   async addUser(_t8: NgForm) {
     const defaultTask: Task = {
       title: 'Tarea 1',
-      frequency: 'Diario',
+      frequency: 'Semanal',
       time: '12:00',
+      days: ['Monday', 'Wednesday'],
       completed: true,
     };
+
     const newUser: User = {
       nombre: this.nombre,
       correo: this.correo,
@@ -65,29 +67,56 @@ export class RegisterPagePage {
       tasks: [defaultTask],
     };
 
-    this.users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(this.users));
-    const userLogg = this.correo;
-    const alert = await this.alertController.create({
-      header: 'Bienvenido',
-      message: userLogg,
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.addTaskToUser;
-            this.router.navigate(['/home'], { state: { user: newUser } });
+    if (await this.validateUser(newUser, _t8)) {
+      this.users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(this.users));
+      const userLogg = this.correo;
+      const alert = await this.alertController.create({
+        header: 'Bienvenido',
+        message: userLogg,
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+              this.addTaskToUser;
+              this.router.navigate(['/home'], { state: { user: newUser } });
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
 
-    await alert.present();
-    _t8.reset();
-    // const storedUsers = localStorage.getItem('users');
-    // if (storedUsers) {
-    //   console.log(storedUsers);
-    // }
+      await alert.present();
+      _t8.reset();
+    }
+  }
+
+  async validateUser(newUser: User, _t8: NgForm): Promise<boolean> {
+    let userFound: User[] = [];
+    const storedUsers = localStorage.getItem('users');
+    if (storedUsers) {
+      userFound = JSON.parse(storedUsers);
+      const found = userFound.some((user) => newUser.correo === user.correo);
+      console.log(found);
+      if (found) {
+        const alertError = await this.alertController.create({
+          header: 'Correo ya registrado',
+          message:
+            'El correo que estas intentando registrar ya existe, inicia sesión',
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                _t8.reset();
+              },
+            },
+          ],
+        });
+
+        await alertError.present();
+        return false;
+      }
+    }
+    return true;
   }
 
   addTaskToUser(email: string, task: Task) {
