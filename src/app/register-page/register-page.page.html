@@ -38,30 +38,45 @@
           #correoInput="ngModel"
         ></ion-input>
       </ion-item>
+
+      <!-- Selector de País -->
       <ion-item>
-        <ion-label position="floating">País</ion-label>
-        <ion-input
-          type="text"
+        <ion-label>País</ion-label>
+        <ion-select
+          [(ngModel)]="selectedCountry"
+          (ionChange)="onCountryChange($event)"
+          label-placement="stacked"
+          placeholder="Selecciona un país"
           name="pais"
-          [(ngModel)]="pais"
-          errorText="Campo requerido"
           required
           #paisInput="ngModel"
-          pattern="[a-zA-Z\s]+"
-        ></ion-input>
+        >
+          <ion-select-option
+            *ngFor="let country of countries"
+            [value]="country.name"
+            >{{ country.name }}</ion-select-option
+          >
+        </ion-select>
       </ion-item>
+
+      <!-- Selector de Estado -->
       <ion-item>
-        <ion-label position="floating">Estado</ion-label>
-        <ion-input
-          type="text"
+        <ion-label>Estado</ion-label>
+        <ion-select
+          [(ngModel)]="selectedState"
+          label-placement="stacked"
+          placeholder="Selecciona un estado"
           name="estado"
-          [(ngModel)]="estado"
-          errorText="Campo requerido"
+          [disabled]="!estados.length"
           required
           #estadoInput="ngModel"
-          pattern="[a-zA-Z\s]+"
-        ></ion-input>
+        >
+          <ion-select-option *ngFor="let state of estados" [value]="state.name"
+            >{{ state.name }}</ion-select-option
+          >
+        </ion-select>
       </ion-item>
+
       <ion-item>
         <ion-label position="floating">Dirección</ion-label>
         <ion-input

@@ -1,24 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../interfaces/User.interface';
 import { Task } from '../interfaces/Task.interface';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+
+interface Country {
+  name: string;
+  states: { name: string; state_code: string }[];
+}
 
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.page.html',
   styleUrls: ['./register-page.page.scss'],
 })
-export class RegisterPagePage {
+export class RegisterPagePage implements OnInit {
+  countrySearchTerm: any;
   goBack() {
     this.router.navigate(['/']);
   }
-
+  countries: Country[] = [];
+  estados: { name: string; state_code: string }[] = [];
+  selectedCountry: string = '';
+  selectedState: string = '';
   nombre: string;
   correo: string;
-  pais: string;
-  estado: string;
   direccion: string;
   telefono: string;
   genero: string;
@@ -31,18 +39,49 @@ export class RegisterPagePage {
 
   constructor(
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private http: HttpClient
   ) {
     this.nombre = '';
     this.correo = '';
-    this.pais = '';
-    this.estado = '';
     this.direccion = '';
     this.telefono = '';
     this.genero = '';
     this.fechaNacimiento = new Date();
     this.estadoCivil = '';
     this.tasks = [];
+  }
+
+  ngOnInit() {
+    this.loadCountries();
+  }
+
+  // Cargar lista de países al iniciar
+  loadCountries() {
+    this.http
+      .get('https://countriesnow.space/api/v0.1/countries/states')
+      .subscribe((response: any) => {
+        this.countries = response.data;
+      });
+  }
+
+  // Cargar estados según el país seleccionado
+  onCountryChange(event: any) {
+    const selectedCountry = this.countries.find(
+      (country) => country.name === event.detail.value
+    );
+    if (selectedCountry) {
+      this.estados = selectedCountry.states;
+      if (this.estados.length === 0) {
+        // Si el país no tiene estados, establecer el mismo valor del país en el campo de estado
+        this.selectedState = selectedCountry.name;
+      } else {
+        this.selectedState = '';
+      }
+    } else {
+      this.estados = [];
+      this.selectedState = '';
+    }
   }
 
   async addUser(_t8: NgForm) {
@@ -57,8 +96,8 @@ export class RegisterPagePage {
     const newUser: User = {
       nombre: this.nombre,
       correo: this.correo,
-      pais: this.pais,
-      estado: this.estado,
+      pais: this.selectedCountry,
+      estado: this.selectedState,
       direccion: this.direccion,
       telefono: this.telefono,
       genero: this.genero,

@@ -2,11 +2,15 @@ ion-list{
   margin: 0;
   padding: 0;
 }
-.btnEdit {
-  margin-bottom: 5px !important;
+
+.boton-ancho {
+  flex: 1; /* Los botones ocuparán el mismo espacio */
+  margin: 0 0.5rem; /* Espaciado entre los botones */
+  max-width: 15rem; /* Ancho máximo para los botones */
+}
+
+.acciones{
+  display: flex;
+  justify-content: space-between; /* Espacio entre los botones */
   margin: 2rem;
-  width: 15rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }

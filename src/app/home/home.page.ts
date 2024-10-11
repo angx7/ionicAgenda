@@ -4,6 +4,7 @@ import { User } from '../interfaces/User.interface';
 import { ModalController } from '@ionic/angular';
 import { TaskDetailModalPage } from '../task-detail-modal/task-detail-modal.page';
 import { Task } from '../interfaces/Task.interface';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -15,15 +16,34 @@ export class HomePage implements OnInit {
 
   constructor(
     private router: Router,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async openModal(task: Task | undefined) {
     const modal = await this.modalController.create({
       component: TaskDetailModalPage,
-      componentProps: { task },
+      componentProps: { task, userCorreo: this.user?.correo },
     });
+
+    // modal.onDidDismiss().then((data) => {
+    //   if (data.data) {
+    //     this.updateTask(data.data);
+    //   }
+    // });
     return await modal.present();
+  }
+
+  updateTask(updatedTask: Task) {
+    if (this.user) {
+      const taskIndex = this.user.tasks.findIndex(
+        (t) => t.title === updatedTask.title
+      );
+      if (taskIndex !== -1) {
+        this.user.tasks[taskIndex] = updatedTask;
+        this.cdr.detectChanges(); // Forzar la detección de cambios
+      }
+    }
   }
 
   logOut() {
