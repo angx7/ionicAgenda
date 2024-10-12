@@ -140,6 +140,16 @@
     </ion-segment-button>
   </ion-segment>
 
+  <ion-item>
+    <div>
+      <ion-label
+        >Porcentaje de tareas completadas: {{ completionPercentage |
+        number:'1.0-2' }}%</ion-label
+      >
+      <ion-progress-bar [value]="progressBar"></ion-progress-bar>
+    </div>
+  </ion-item>
+
   <ion-list *ngIf="user">
     <ion-list-header>
       <ion-label>Tareas de {{ user.nombre }}</ion-label>
@@ -159,10 +169,7 @@
           <ion-icon slot="start" name="create-outline"></ion-icon>
           Editar
         </ion-item-option>
-        <ion-item-option
-          color="danger"
-          (click)="confirmRemoveTask($event, task)"
-        >
+        <ion-item-option color="danger" (click)="confirmRemoveTask(task)">
           <ion-icon slot="start" name="trash"></ion-icon>
           Delete
         </ion-item-option>

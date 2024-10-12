@@ -29,25 +29,6 @@ export class NewTaskModalPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  saveTask1() {
-    if (this.userCorreo) {
-      const storedTasks = localStorage.getItem(this.userCorreo);
-      const tasks: Task[] = storedTasks ? JSON.parse(storedTasks) : [];
-
-      console.log('Tareas antes de agregar:', tasks);
-
-      this.task.id = tasks.length ? tasks[tasks.length - 1].id + 1 : 1;
-      tasks.push(this.task);
-
-      console.log('Tareas después de agregar:', tasks);
-
-      localStorage.setItem(this.userCorreo, JSON.stringify(tasks));
-      this.dismissModal();
-      console.log(this.task);
-    } else {
-      console.error('No user email provided');
-    }
-  }
   saveTask() {
     if (this.userCorreo) {
       const storedUsers = localStorage.getItem('users');

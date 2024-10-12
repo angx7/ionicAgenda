@@ -16,6 +16,8 @@ export class HomePage implements OnInit {
   user: User | undefined;
   filteredTasks: Task[] = [];
   filter: string = 'todas';
+  completionPercentage: number = 0;
+  progressBar: number = 0;
 
   constructor(
     private router: Router,
@@ -34,6 +36,7 @@ export class HomePage implements OnInit {
       }
     }
     this.loadUserTasks();
+    this.reorderTask();
   }
 
   applyFilter() {
@@ -42,14 +45,31 @@ export class HomePage implements OnInit {
         this.filteredTasks = this.user.tasks.filter(
           (task) => task.frequency === 'Semanal'
         );
+        this.reorderTask();
       } else if (this.filter === 'Mensual') {
         this.filteredTasks = this.user.tasks.filter(
           (task) => task.frequency === 'Mensual'
         );
+        this.reorderTask();
       } else {
         this.filteredTasks = this.user.tasks;
+        this.reorderTask();
       }
+      this.reorderTask();
+      this.calculateCompletionPercentage();
     }
+  }
+  calculateCompletionPercentage() {
+    if (this.filteredTasks.length === 0) {
+      this.completionPercentage = 0;
+      return;
+    }
+    const completedTasks = this.filteredTasks.filter(
+      (task) => task.completed
+    ).length;
+    this.completionPercentage =
+      (completedTasks / this.filteredTasks.length) * 100;
+    this.progressBar = completedTasks / this.filteredTasks.length;
   }
 
   // Detalles de tarea
@@ -78,6 +98,7 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         this.updateTask(data.data);
+        this.reorderTask();
       }
     });
     return await modal.present();
@@ -90,21 +111,11 @@ export class HomePage implements OnInit {
     });
     modal.onDidDismiss().then(() => {
       this.loadUserTasks();
+      this.reorderTask();
     });
     return await modal.present();
   }
-  loadUserTasks1() {
-    if (this.user) {
-      const storedUsers = localStorage.getItem('users');
-      const users: User[] = storedUsers ? JSON.parse(storedUsers) : [];
-      const userIndex = users.findIndex(
-        (user) => user.correo === this.user?.correo
-      );
-      if (userIndex !== -1) {
-        this.user.tasks = users[userIndex].tasks;
-      }
-    }
-  }
+
   loadUserTasks() {
     if (this.user) {
       const storedUsers = localStorage.getItem('users');
@@ -117,6 +128,12 @@ export class HomePage implements OnInit {
         this.applyFilter();
       }
     }
+    this.reorderTask();
+  }
+  reorderTask() {
+    this.user?.tasks.sort((a, b) => {
+      return a.completed === b.completed ? 0 : a.completed ? 1 : -1;
+    });
   }
   setFilter(filter: string) {
     this.filter = filter;
@@ -147,6 +164,7 @@ export class HomePage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         this.updateTask(data.data);
+        this.reorderTask();
       }
     });
     return await modal.present();
@@ -214,8 +232,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  async confirmRemoveTask(event: Event, task: Task) {
-    event.stopPropagation();
+  async confirmRemoveTask(task: Task) {
     const alert = await this.alertController.create({
       header: 'Eliminar hábito',
       message: '¿Estas seguro de que deseas eliminar este hábito?',
@@ -253,6 +270,7 @@ export class HomePage implements OnInit {
           if (currentUserIndex !== -1) {
             users[currentUserIndex].tasks = this.user.tasks;
             localStorage.setItem('users', JSON.stringify(users));
+            this.loadUserTasks();
             console.log('LocalStorage updated successfully.');
           } else {
             console.log('Current user not found in localStorage.');

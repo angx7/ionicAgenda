@@ -25,11 +25,7 @@ export class LoginPage {
       (user: { correo: string }) => user.correo === this.correo
     );
     if (user) {
-      const userTasks = this.getUserTasks(this.correo);
-      console.log('Tareas del usuario:', userTasks);
       this.router.navigate(['/home'], { state: { user: user } });
-
-      // this.router.navigate(['/home']);
     } else {
       const alert = await this.alertController.create({
         header: 'Correo inválido',
@@ -40,9 +36,6 @@ export class LoginPage {
       await alert.present();
       _t9.reset();
     }
-    // console.log(users);
-
-    console.log(user);
   }
 
   navigateToRegister() {

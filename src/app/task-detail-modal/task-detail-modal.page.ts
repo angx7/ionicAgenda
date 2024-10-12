@@ -21,6 +21,7 @@ export class TaskDetailModalPage implements OnInit {
       task.completed = task.completed ? false : true;
       this.updateLocalStorage();
       console.log('Tarea completada:', task);
+      this.modalController.dismiss(task); // Cerrar el modal y pasar la tarea actualizada
     } else {
       console.error('No se pudo completar la tarea: tarea indefinida');
     }
