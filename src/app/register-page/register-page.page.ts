@@ -86,11 +86,21 @@ export class RegisterPagePage implements OnInit {
 
   async addUser(_t8: NgForm) {
     const defaultTask: Task = {
+      id: 1,
       title: 'Tarea 1',
       frequency: 'Semanal',
       time: '12:00',
-      days: ['Monday', 'Wednesday'],
-      completed: true,
+      days: ['Lunes', 'Martes'],
+      completed: false,
+    };
+
+    const anotherTask: Task = {
+      id: 2,
+      title: 'Leer',
+      frequency: 'Diario',
+      time: '18:00',
+      days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
+      completed: false,
     };
 
     const newUser: User = {
@@ -103,12 +113,15 @@ export class RegisterPagePage implements OnInit {
       genero: this.genero,
       fechaNacimiento: this.fechaNacimiento,
       estadoCivil: this.estadoCivil,
-      tasks: [defaultTask],
+      tasks: [defaultTask, anotherTask],
     };
 
     if (await this.validateUser(newUser, _t8)) {
-      this.users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(this.users));
+      const storedUsers = localStorage.getItem('users');
+      const users = storedUsers ? JSON.parse(storedUsers) : [];
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      this.users = users;
       const userLogg = this.correo;
       const alert = await this.alertController.create({
         header: 'Bienvenido',

@@ -9,6 +9,7 @@ import { Task } from '../interfaces/Task.interface';
 })
 export class EditTaskModalPage implements OnInit {
   @Input() task: Task = {
+    id: 0,
     title: '',
     frequency: '',
     time: '',
@@ -16,12 +17,16 @@ export class EditTaskModalPage implements OnInit {
     completed: false,
   };
   originalTask: Task = {
+    id: 0,
     title: '',
     frequency: '',
     time: '',
     days: [],
     completed: false,
   };
+
+  @Input() userCorreo: string | undefined;
+
   constructor(
     private modalController: ModalController,
     private alertController: AlertController
@@ -29,6 +34,10 @@ export class EditTaskModalPage implements OnInit {
 
   ngOnInit() {
     this.originalTask = { ...this.task };
+    console.log(
+      'Correo del usuario recibido en EditTaskModalPage:',
+      this.userCorreo
+    );
   }
 
   dismissModal() {

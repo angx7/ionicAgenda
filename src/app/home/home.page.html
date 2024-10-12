@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="logOut()">
@@ -10,11 +10,75 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-list *ngIf="user">
+    <ion-list-header>
+      <ion-label class="addTask">Tareas de {{ user.nombre }}</ion-label>
+      <ion-button (click)="addTask()">
+        <ion-icon
+          slot="icon-only"
+          name="add-circle-outline"
+          class="addTask"
+        ></ion-icon>
+      </ion-button>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let task of user.tasks">
+      <ion-item>
+        <ion-label>{{ task.title }}</ion-label>
+        <ion-checkbox
+          slot="start"
+          [checked]="task.completed"
+          [disabled]="true"
+        ></ion-checkbox>
+        <ion-button color="success" (click)="openModal1(task)">
+          <ion-icon name="information-circle-outline" size="large"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option (click)="openModal(task)" color="warning">
+          <ion-icon slot="start" name="create-outline"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="confirmRemoveTask(task)">
+          <ion-icon slot="start" name="trash"></ion-icon>
+          Delete
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content> -->
+<!--
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lista de Tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logOut()">Cerrar Sesión</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="pepe">
+  <ion-segment
+    [(ngModel)]="filter"
+    (ionChange)="setFilter($event.detail.value?.toString() || 'todas')"
+  >
+    <ion-segment-button value="todas">
+      <ion-label>Todas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Semanal">
+      <ion-label>Semanales</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Mensual">
+      <ion-label>Mensuales</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
   <ion-list *ngIf="user">
     <ion-list-header>
       <ion-label>Tareas de {{ user.nombre }}</ion-label>
     </ion-list-header>
-    <ion-item-sliding *ngFor="let task of user.tasks">
+    <ion-item-sliding *ngFor="let task of filteredTasks">
       <ion-item-options side="start">
         <ion-item-option color="success">
           <ion-icon slot="start" name="archive"></ion-icon>
@@ -22,24 +86,93 @@
         </ion-item-option>
       </ion-item-options>
 
-      <ion-item>
+      <ion-item (click)="detailTaskModal(task)">
         <ion-label>{{ task.title }}</ion-label>
         <ion-checkbox slot="start" [checked]="task.completed"></ion-checkbox>
-        <ion-button color="warning" (click)="openModal(task)">
-          <ion-icon name="eye-outline"></ion-icon>
-        </ion-button>
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option>
-          <ion-icon slot="start" name="heart"></ion-icon>
-          Favorite
+        <ion-item-option (click)="opendEditModal(task)" color="warning">
+          <ion-icon slot="start" name="create-outline"></ion-icon>
+          Editar
         </ion-item-option>
-        <ion-item-option color="danger">
+        <ion-item-option (click)="opendEditModal(task)">
+          <ion-icon slot="start" name="heart"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="confirmRemoveTask(task)">
           <ion-icon slot="start" name="trash"></ion-icon>
           Delete
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addTask()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content> -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lista de Tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logOut()">Cerrar Sesión</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment
+    [(ngModel)]="filter"
+    (ionChange)="setFilter($event.detail.value?.toString() || 'todas')"
+    name="filter"
+  >
+    <ion-segment-button value="todas">
+      <ion-label>Todas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Semanal">
+      <ion-label>Semanales</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Mensual">
+      <ion-label>Mensuales</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list *ngIf="user">
+    <ion-list-header>
+      <ion-label>Tareas de {{ user.nombre }}</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let task of filteredTasks">
+      <ion-item (click)="openTaskDetailModal($event, task)">
+        <ion-label>{{ task.title }}</ion-label>
+        <ion-checkbox
+          slot="start"
+          [checked]="task.completed"
+          [disabled]="true"
+        ></ion-checkbox>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option (click)="openEditModal($event, task)" color="warning">
+          <ion-icon slot="start" name="create-outline"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option
+          color="danger"
+          (click)="confirmRemoveTask($event, task)"
+        >
+          <ion-icon slot="start" name="trash"></ion-icon>
+          Delete
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addTask()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
