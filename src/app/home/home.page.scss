@@ -1,20 +1,23 @@
-ion-list {
-  margin: 0;
-  padding-top: 3px;
-}
 
 .addTask{
-  height: 2.3rem;
-  width: 2.3rem;
+  height: 3rem;
+  width: 3rem;
   margin-right: 20px !important;
-  margin-top: 0px !important;
-  margin: 10px;
+  margin-bottom: 30px;
 }
-ion-content{
+
+.container{
   margin: 0;
   padding: 0;
 }
-.pepe{
-  background-color: white;
-  margin: 300px;
+.centrarContent {
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }

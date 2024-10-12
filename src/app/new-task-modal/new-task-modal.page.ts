@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Task } from '../interfaces/Task.interface';
 import { User } from '../interfaces/User.interface';
@@ -8,7 +8,7 @@ import { User } from '../interfaces/User.interface';
   templateUrl: './new-task-modal.page.html',
   styleUrls: ['./new-task-modal.page.scss'],
 })
-export class NewTaskModalPage implements OnInit {
+export class NewTaskModalPage {
   @Input() userCorreo: string | undefined;
   task: Task = {
     id: 0,
@@ -20,10 +20,6 @@ export class NewTaskModalPage implements OnInit {
   };
 
   constructor(private modalController: ModalController) {}
-
-  ngOnInit() {
-    console.log('Correo recibido', this.userCorreo);
-  }
 
   dismissModal() {
     this.modalController.dismiss();
@@ -39,19 +35,15 @@ export class NewTaskModalPage implements OnInit {
       );
       if (userIndex !== -1) {
         const user = users[userIndex];
-        console.log('Tareas antes de agregar:', user.tasks);
 
         this.task.id = user.tasks.length
           ? user.tasks[user.tasks.length - 1].id + 1
           : 1;
         user.tasks.push(this.task);
 
-        console.log('Tareas después de agregar:', user.tasks);
-
         users[userIndex] = user;
         localStorage.setItem('users', JSON.stringify(users));
         this.dismissModal();
-        console.log(this.task);
       } else {
         console.error('User not found');
       }

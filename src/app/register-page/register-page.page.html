@@ -129,6 +129,7 @@
           [(ngModel)]="fechaNacimiento"
           errorText="Campo requerido"
           required
+          [max]="maxDate"
           #fechaNacimientoInput="ngModel"
         ></ion-input>
       </ion-item>

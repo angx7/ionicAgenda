@@ -17,10 +17,7 @@ interface Country {
   styleUrls: ['./register-page.page.scss'],
 })
 export class RegisterPagePage implements OnInit {
-  countrySearchTerm: any;
-  goBack() {
-    this.router.navigate(['/']);
-  }
+  maxDate: string | undefined;
   countries: Country[] = [];
   estados: { name: string; state_code: string }[] = [];
   selectedCountry: string = '';
@@ -50,10 +47,22 @@ export class RegisterPagePage implements OnInit {
     this.fechaNacimiento = new Date();
     this.estadoCivil = '';
     this.tasks = [];
+    this.setMaxDate();
   }
-
   ngOnInit() {
     this.loadCountries();
+  }
+  goBack() {
+    this.router.navigate(['/']);
+  }
+
+  setMaxDate() {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
+    const year = today.getFullYear();
+
+    this.maxDate = `${year - 6}-${month}-${day}`;
   }
 
   // Cargar lista de países al iniciar
@@ -97,7 +106,7 @@ export class RegisterPagePage implements OnInit {
     const anotherTask: Task = {
       id: 2,
       title: 'Leer',
-      frequency: 'Diario',
+      frequency: 'Mensual',
       time: '18:00',
       days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
       completed: false,
@@ -148,7 +157,6 @@ export class RegisterPagePage implements OnInit {
     if (storedUsers) {
       userFound = JSON.parse(storedUsers);
       const found = userFound.some((user) => newUser.correo === user.correo);
-      console.log(found);
       if (found) {
         const alertError = await this.alertController.create({
           header: 'Correo ya registrado',

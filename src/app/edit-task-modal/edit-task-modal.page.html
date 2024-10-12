@@ -1,67 +1,3 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>Editar Tarea</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">Cerrar</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <form #taskForm="ngForm">
-    <ion-item>
-      <ion-label position="floating">Título</ion-label>
-      <ion-input
-        [(ngModel)]="task.title"
-        name="title"
-        required
-        errorText="Campo requerido"
-        #nombreInput="ngModel"
-      ></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Frecuencia</ion-label>
-      <ion-select [(ngModel)]="task.frequency" name="frequency" required>
-        <ion-select-option value="Mensual">Mensual</ion-select-option>
-        <ion-select-option value="Semanal">Semanal</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Hora</ion-label>
-      <ion-input
-        [(ngModel)]="task.time"
-        name="time"
-        type="time"
-        required
-        errorText="Campo requerido"
-        #nombreInput="ngModel"
-      ></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Días</ion-label>
-      <ion-select [(ngModel)]="task.days" name="days" multiple="true" required>
-        <ion-select-option value="Lunes">Lunes</ion-select-option>
-        <ion-select-option value="Martes">Martes</ion-select-option>
-        <ion-select-option value="Miércoles">Miércoles</ion-select-option>
-        <ion-select-option value="Jueves">Jueves</ion-select-option>
-        <ion-select-option value="Viernes">Viernes</ion-select-option>
-        <ion-select-option value="Sábado">Sábado</ion-select-option>
-        <ion-select-option value="Domingo">Domingo</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Completado</ion-label>
-      <ion-toggle [(ngModel)]="task.completed"></ion-toggle>
-    </ion-item>
-
-    <ion-button expand="full" [disabled]="!taskForm.form.valid" (click)="save()"
-      >Guardar</ion-button
-    >
-  </form>
-</ion-content> -->
 <ion-header>
   <ion-toolbar>
     <ion-title>Editar Tarea</ion-title>
@@ -113,5 +49,7 @@
     <ion-toggle [(ngModel)]="task.completed" name="completed"></ion-toggle>
   </ion-item>
 
-  <ion-button expand="full" (click)="save()">Guardar</ion-button>
+  <ion-button class="btnDesingh" expand="full" (click)="save()"
+    >Guardar</ion-button
+  >
 </ion-content>
