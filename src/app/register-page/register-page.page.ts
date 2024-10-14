@@ -94,24 +94,6 @@ export class RegisterPagePage implements OnInit {
   }
 
   async addUser(_t8: NgForm) {
-    const defaultTask: Task = {
-      id: 1,
-      title: 'Tarea 1',
-      frequency: 'Semanal',
-      time: '12:00',
-      days: ['Lunes', 'Martes'],
-      completed: false,
-    };
-
-    const anotherTask: Task = {
-      id: 2,
-      title: 'Leer',
-      frequency: 'Mensual',
-      time: '18:00',
-      days: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
-      completed: false,
-    };
-
     const newUser: User = {
       nombre: this.nombre,
       correo: this.correo,
@@ -122,7 +104,7 @@ export class RegisterPagePage implements OnInit {
       genero: this.genero,
       fechaNacimiento: this.fechaNacimiento,
       estadoCivil: this.estadoCivil,
-      tasks: [defaultTask, anotherTask],
+      tasks: [],
     };
 
     if (await this.validateUser(newUser, _t8)) {
