@@ -61,6 +61,7 @@ export class HomePage implements OnInit {
   calculateCompletionPercentage() {
     if (this.filteredTasks.length === 0) {
       this.completionPercentage = 0;
+      this.progressBar = 0;
       return;
     }
     const completedTasks = this.filteredTasks.filter(
