@@ -5,4 +5,5 @@ export interface Task {
   time: string;
   days: string[];
   completed: boolean;
+  notes: string;
 }
