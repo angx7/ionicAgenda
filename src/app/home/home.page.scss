@@ -21,3 +21,108 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+// .sync-bar {
+//   top: 0;
+//   width: 100%;
+//   z-index: 1000;
+//   color: white;
+//   text-align: center;
+//   padding: 10px;
+// }
+
+#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+ion-toolbar.offline {
+  --background: red;
+  --color: black;
+  --min-height: 40px;
+  align-items: center;
+  text-align: center;
+}
+
+ion-toolbar.syncing {
+  --background: #2dd36f;
+  --color: black;
+  --min-height: 40px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  align-items: center;
+
+
+}
+
+// ion-header {
+//   &.ios {
+//     ion-toolbar {
+//       --background: #2dd36f;
+//       /* Fondo verde para sincronización */
+//       --color: black;
+//       /* Color del texto */
+//       --min-height: 56px;
+//       /* Ajusta la altura mínima */
+//       --padding-start: 16px;
+//       /* Elimina márgenes extra */
+//       --padding-end: 16px;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       text-align: center;
+//       /* Asegura alineación central */
+//     }
+//   }
+
+//   &.md {
+
+//     /* Para Android, si necesitas ajustes diferentes */
+//     ion-toolbar {
+//       --background: #2dd36f;
+//       --color: black;
+//       --min-height: 56px;
+//     }
+//   }
+// }
+
+// ion-toolbar {
+//   &.offline {
+//     --background: red;
+//     --color: white;
+//     --min-height: 40px;
+//   }
+
+//   &.syncing {
+//     --background: #2dd36f;
+//     --color: black;
+//     --min-height: 40px;
+//   }
+// }

@@ -1,9 +1,10 @@
 export interface Task {
   id: number;
   title: string;
-  frequency: string;
+  description: string;
   time: string;
-  days: string[];
-  completed: boolean;
-  notes: string;
+  date: Date; // Date type
+  location: string;
+  category: string[];
+  image?: string; // ? means optional
 }

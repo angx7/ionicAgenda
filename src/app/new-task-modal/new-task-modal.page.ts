@@ -1,25 +1,96 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Task } from '../interfaces/Task.interface';
 import { User } from '../interfaces/User.interface';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-new-task-modal',
   templateUrl: './new-task-modal.page.html',
   styleUrls: ['./new-task-modal.page.scss'],
 })
-export class NewTaskModalPage {
+export class NewTaskModalPage implements OnInit {
+  async checkPermissions() {
+    try {
+      const cameraStatus = await Camera.checkPermissions();
+
+      if (
+        cameraStatus.camera !== 'granted' ||
+        cameraStatus.photos !== 'granted'
+      ) {
+        const result = await Camera.requestPermissions({
+          permissions: ['camera', 'photos'],
+        });
+
+        if (result.camera !== 'granted' || result.photos !== 'granted') {
+          console.error('Permisos de cámara/galería no otorgados');
+        } else {
+          console.log('Permisos de cámara y galería otorgados');
+        }
+      } else {
+        console.log('Permisos ya otorgados');
+      }
+    } catch (error) {
+      console.error('Error al verificar o solicitar permisos:', error);
+    }
+  }
+
+  async takePicture() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl, // Retorna la imagen como Base64
+        source: CameraSource.Camera, // Abre la cámara
+      });
+
+      if (image.dataUrl) {
+        this.task.image = image.dataUrl; // Guarda la imagen como parte de la tarea
+        console.log(
+          'Imagen capturada y almacenada en la tarea:',
+          this.task.image
+        );
+      }
+    } catch (error) {
+      console.error('Error al capturar la imagen:', error);
+    }
+  }
+  async selectPicture() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl, // Retorna la imagen como Base64
+        source: CameraSource.Photos, // Abre la galería
+      });
+
+      if (image.dataUrl) {
+        this.task.image = image.dataUrl; // Guarda la imagen como parte de la tarea
+        console.log(
+          'Imagen seleccionada y almacenada en la tarea:',
+          this.task.image
+        );
+      }
+    } catch (error) {
+      console.error('Error al seleccionar la imagen:', error);
+    }
+  }
   @Input() userCorreo: string | undefined;
   task: Task = {
     id: 0,
     title: '',
-    frequency: '',
+    description: '',
+    date: new Date(),
     time: '',
-    days: [],
-    completed: false,
+    location: '',
+    category: [],
+    image: '',
   };
 
   constructor(private modalController: ModalController) {}
+  ngOnInit(): void {
+    this.checkPermissions();
+  }
 
   dismissModal() {
     this.modalController.dismiss();

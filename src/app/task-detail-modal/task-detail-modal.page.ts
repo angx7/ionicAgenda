@@ -13,16 +13,6 @@ export class TaskDetailModalPage {
   @Input() userCorreo: string | undefined;
   constructor(private modalController: ModalController) {}
 
-  completeTask(task: Task | undefined) {
-    if (task) {
-      task.completed = task.completed ? false : true;
-      this.updateLocalStorage();
-      this.modalController.dismiss(task); // Cerrar el modal y pasar la tarea actualizada
-    } else {
-      console.error('No se pudo completar la tarea: tarea indefinida');
-    }
-  }
-
   async editModal(task: Task | undefined) {
     const clonedTask = { ...task };
     const modal = await this.modalController.create({

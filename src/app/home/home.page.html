@@ -1,75 +1,122 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Lista de Tareas</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logOut()">Cerrar Sesión</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Configuraciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-label style="padding-right: 0.5rem"
+      >Sincronizar con datos móviles</ion-label
+    >
+    <ion-toggle
+      [checked]="syncOnMobileData"
+      (ionChange)="toggleSyncOnMobileData($event)"
+    ></ion-toggle>
+    <ion-button size="small" style="padding-top: 1rem" (click)="syncData()">
+      Sincronizar Datos
+      <ion-icon
+        style="padding-left: 0.5rem"
+        name="cloud-upload-outline"
+      ></ion-icon>
+    </ion-button>
 
-<ion-content class="container">
-  <ion-segment
-    [(ngModel)]="filter"
-    (ionChange)="setFilter($event.detail.value?.toString() || 'todas')"
-    name="filter"
-  >
-    <ion-segment-button value="todas">
-      <ion-label>Todas</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="Semanal">
-      <ion-label>Semanales</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="Mensual">
-      <ion-label>Mensuales</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+    <ion-button size="small" style="padding-top: 1rem" (click)="logOut()">
+      Cerrar Sesión
+      <ion-icon
+        name="log-out-outline"
+        slot="end"
+        style="padding-left: 0.5rem"
+      ></ion-icon>
+    </ion-button>
+  </ion-content>
+</ion-menu>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Lista de Eventos</ion-title>
 
-  <ion-item>
-    <div class="centrarContent">
-      <ion-label
-        >Porcentaje de tareas completadas: {{ completionPercentage |
-        number:'1.0-2' }}%</ion-label
-      >
-      <ion-progress-bar [value]="progressBar"></ion-progress-bar>
-    </div>
-  </ion-item>
+      <ion-buttons slot="end">
+        <ion-menu-button>
+          <ion-icon name="settings-outline"></ion-icon>
+        </ion-menu-button>
+      </ion-buttons>
+      <!-- Filtro por categoría (ionChange)="filterCategory($event.detail.value || 'Todas')"-->
+    </ion-toolbar>
+    <ion-header id="headerHidden" *ngIf="showHeader">
+      <ion-toolbar [ngClass]="headerClass">
+        <ion-title>{{ connectionStatus }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="filterCategory" (ionChange)="applyFilters()">
+        <ion-segment-button value="Todas">
+          <ion-label>Todas</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Trabajo">
+          <ion-label>Trabajo</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Estudio">
+          <ion-label>Estudio</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Personal">
+          <ion-label>Personal</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-header>
 
-  <ion-list *ngIf="user">
-    <ion-list-header>
-      <ion-label>Tareas de {{ user.nombre }}</ion-label>
-    </ion-list-header>
-    <ion-item-sliding *ngFor="let task of filteredTasks">
-      <ion-item (click)="openTaskDetailModal($event, task)">
-        <ion-label>{{ task.title }}</ion-label>
-        <ion-checkbox
-          slot="start"
-          [checked]="task.completed"
-          [disabled]="true"
-        ></ion-checkbox>
-      </ion-item>
+  <ion-content class="container">
+    <!-- Barra de búsqueda -->
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      (ionInput)="searchEvents($event)"
+      (ionBlur)="applyFilters()"
+      (keydown.enter)="applyFilters()"
+      placeholder="Buscar por título o categoría"
+    ></ion-searchbar>
 
-      <ion-item-options side="end">
-        <ion-item-option
-          (click)="openEditModal($event, task)"
-          style="background-color: #66b2ff; color: #000"
-        >
-          <ion-icon slot="start" name="create-outline"></ion-icon>
-          Editar
-        </ion-item-option>
-        <ion-item-option
-          style="background-color: #333; color: #fff"
-          (click)="confirmRemoveTask(task)"
-        >
-          <ion-icon slot="start" name="trash"></ion-icon>
-          Delete
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+    <!-- Lista de tareas filtradas -->
+    <ion-list *ngIf="user">
+      <ion-list-header>
+        <ion-label>Eventos de {{ user.nombre }}</ion-label>
+      </ion-list-header>
+      <ion-item-sliding *ngFor="let task of filteredTasks">
+        <ion-item (click)="openTaskDetailModal($event, task)">
+          <ion-label>{{ task.title }}</ion-label>
+          <ion-label>{{ task.date | date: 'dd/MM/yyyy' }}</ion-label>
+        </ion-item>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addTask()" class="addTask">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
+        <ion-item-options side="end">
+          <ion-item-option
+            (click)="openEditModal($event, task)"
+            style="background-color: #66b2ff; color: #000"
+          >
+            <ion-icon slot="start" name="create-outline"></ion-icon>
+            Editar
+          </ion-item-option>
+          <ion-item-option
+            (click)="shareEvent(task)"
+            style="background-color: #ffc107; color: #000"
+          >
+            <ion-icon slot="start" name="share-outline"></ion-icon>
+            Compartir
+          </ion-item-option>
+          <ion-item-option
+            style="background-color: #333; color: #fff"
+            (click)="confirmRemoveTask(task)"
+          >
+            <ion-icon slot="start" name="trash"></ion-icon>
+            Delete
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- Botón para añadir tareas -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="addTask()" class="addTask">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-content>
+</div>
